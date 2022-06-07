@@ -1,6 +1,6 @@
 # Uczenie Maszynowe w Finansach
 
-* `UMF wymagania.pdf` - opisanie wymagania funkcjonalnych i niefunkcjonalnych projektu,
+* `UMF wymagania.pdf` - opisanie wymagań funkcjonalnych i niefunkcjonalnych projektu,
 * `UMF_project_data_prep.ipynb` - przygotowanie danych,
 * `Model_regresji_dla_danych_finansowych.ipynb` - początkowa faza modelowania,
 * `Advanced_modelling.ipynb` - faza projektu odpowiedzialna za zaawansowane modelowanie,
