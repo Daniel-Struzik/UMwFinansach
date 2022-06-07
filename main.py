@@ -177,10 +177,10 @@ X_col = np.setdiff1d(X_col, Others)
 # Funkcja 2 i 3
 X = getX(df, X_col)
 #Wybór zmiennej objaśnianej (horyzontu czasowego analizy)
-check_list = ['RoR_date', 'RoR_mtd', 'RoR_qtd', 'Ror_htd', 'RoR_ytd']
-Y_name = input("Wprowadź interesujący cię zakres: RoR_date, RoR_mtd, RoR_qtd, Ror_htd, RoR_ytd ")
+check_list = ['RoR_date', 'RoR_mtd', 'RoR_qtd', 'RoR_htd', 'RoR_ytd']
+Y_name = input("Wprowadź interesujący cię zakres: RoR_date, RoR_mtd, RoR_qtd, RoR_htd, RoR_ytd ")
 while Y_name not in check_list:
-    Y_name = input("Wprowadź poprawny zakres: RoR_date, RoR_mtd, RoR_qtd, Ror_htd, RoR_ytd ")
+    Y_name = input("Wprowadź poprawny zakres: RoR_date, RoR_mtd, RoR_qtd, RoR_htd, RoR_ytd ")
     if Y_name in check_list:
         break
 Y = getY(df, Y_name)
