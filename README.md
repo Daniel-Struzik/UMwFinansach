@@ -10,4 +10,4 @@
 * `main.py` - wykonywalny skrypt - plik nie zawiera przygotowania zbioru danych ze względu na długi czas pobierania danych. Plik na wejściu przyjmuje od użytkownika wybrany okres przewidywania i następnie zwraca wartości RMSE dla wszystkich badanych modeli.
 
 
-Zbiór danych oraz notatnik został zaaktualizowany 07.06, ze względu na znaleziony błąd w notatniku do przygotowania danych.
+Zbiór danych oraz notatnik do przygotowania danych został zaaktualizowany 07.06, ze względu na znaleziony błąd.
