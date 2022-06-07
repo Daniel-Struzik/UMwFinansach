@@ -6,9 +6,11 @@ from pandas import read_csv
 import numpy as np
 
 import matplotlib
+%matplotlib inline
 import matplotlib. pyplot as plt
 import matplotlib. dates as mandates
 from matplotlib import pyplot
+import seaborn as sns
 
 import xgboost as xg
 import lightgbm as lgb
@@ -66,6 +68,31 @@ def getY(dataset, Y_name):
 # Y_name = Y_col[1]
 # Y = getY(df, Y_name)
 
+# Regresja liniowa wersja 1
+
+def linear_regression_1(X1, X2, y1, y2):
+        lineReg = LinearRegression()
+        lineReg.fit(X1, y1)
+        #print('Score: ', lineReg.score(X2, y2))
+        #print('Weights: ', lineReg.coef_)
+
+        Y_pred = lineReg.predict(X2)
+        rmse = np.sqrt(mean_squared_error(y2, Y_pred))
+        print("RMSE dla regresji liniowej 1: % f" %(rmse))
+
+#linear_regression_1(X_train, X_test, y_train, y_test)
+
+# Regresja liniowa wersja 2
+
+def linear_regression_2(X1, X2, y1, y2):
+        regr = linear_model.LinearRegression()
+        regr.fit(X1,y1)
+        Y_pred = regr.predict(X2)
+        rmse = np.sqrt(mean_squared_error(y2, Y_pred))
+        print("RMSE dla regresji liniowej 2: % f" %(rmse))
+
+#linear_regression_2(X_train, X_test, y_train, y_test)
+
 # Regresja liniowa wersja 3
 
 def linear_regression_3(X1, X2, y1, y2):
@@ -90,6 +117,20 @@ def linear_regression_3(X1, X2, y1, y2):
     print(linear_scores)
     for k, v in linear_scores.items():
         print(k, v.mean())
+    chart = pd.DataFrame({'y2': y2.flatten(), 'pred': Y_pred_test.flatten()})
+    chart = chart.reset_index()
+    plt.figure(figsize=(10, 10))
+    plt.scatter(chart['y2'], chart["pred"], c='crimson')
+    p1 = max(max(chart['y2']), max(chart["pred"]))
+    p2 = min(min(chart['y2']), min(chart["pred"]))
+    plt.plot([p1, p2], [p1, p2], 'b-')
+    plt.xlabel('True Values', fontsize=15)
+    plt.ylabel('Predictions', fontsize=15)
+    plt.axis('equal')
+    plt.show()
+    plt.tight_layout()
+    plt.savefig('chart1.png')
+    plt.show()
 
 # linear_regression_3(X_train, X_test, y_train, y_test)
 
@@ -113,29 +154,57 @@ def XGBmodel(X1, X2, y1, y2):
                    seed=42)
     print(xgb_cv["train-rmse-mean"].mean())
     print("")
+    chart = pd.DataFrame({'y2': y2.flatten(), 'pred': pred.flatten()})
+    chart = chart.reset_index()
+    plt.figure(figsize=(10, 10))
+    plt.scatter(chart['y2'], chart["pred"], c='crimson')
+    p1 = max(max(chart['y2']), max(chart["pred"]))
+    p2 = min(min(chart['y2']), min(chart["pred"]))
+    plt.plot([p1, p2], [p1, p2], 'b-')
+    plt.xlabel('True Values', fontsize=15)
+    plt.ylabel('Predictions', fontsize=15)
+    plt.axis('equal')
+    plt.show()
+    plt.tight_layout()
+    plt.savefig('chart2.png')
+    plt.show()
+
 # XGBmodel(X_train, X_test, y_train, y_test)
 
 # Model LSTM
 
 def LSTMmodel(X1, X2, y1, y2):
-    model = Sequential()
-    model.add(
-        LSTM(units=50, return_sequences=True, input_shape=(X1.shape[1], 1)))
-    model.add(Dropout(0.2))
-    model.add(LSTM(units=50, return_sequences=True))
-    model.add(Dropout(0.2))
-    model.add(LSTM(units=50, return_sequences=True))
-    model.add(Dropout(0.2))
-    model.add(LSTM(units=50))
-    model.add(Dropout(0.2))
-    model.add(Dense(units=1))
-    model.compile(optimizer='adam', loss='mean_squared_error')
-    model.fit(X1, y1, epochs=10, batch_size=32)  # Przy testach 100 zmienić na 1
-    pred = model.predict(X2)
-    rmse = np.sqrt(mean_squared_error(y2, pred))
-    print("")
-    print("RMSE dla LSTM: % f" % (rmse))
 
+      model = Sequential()
+      model.add(LSTM(units=50,return_sequences=True,input_shape=(X1.shape[1], 1)))
+      model.add(Dropout(0.2))
+      model.add(LSTM(units=50,return_sequences=True))
+      model.add(Dropout(0.2))
+      model.add(LSTM(units=50,return_sequences=True))
+      model.add(Dropout(0.2))
+      model.add(LSTM(units=50))
+      model.add(Dropout(0.2))
+      model.add(Dense(units=1))
+      model.compile(optimizer='adam',loss='mean_squared_error')
+      model.fit(X1,y1,epochs=10,batch_size=32) # Przy testach 100 zmienić na 1
+      pred = model.predict(X2)
+      rmse = np.sqrt(mean_squared_error(y2, pred))
+      print("")
+      print("RMSE dla LSTM: % f" %(rmse))
+      chart = pd.DataFrame({'y2':y2.flatten(), 'pred':pred.flatten()})
+      chart = chart.reset_index()
+      plt.figure(figsize=(10,10))
+      plt.scatter(chart['y2'], chart["pred"], c='crimson')
+      p1 = max(max(chart['y2']), max(chart["pred"]))
+      p2 = min(min(chart['y2']), min(chart["pred"]))
+      plt.plot([p1, p2], [p1, p2], 'b-')
+      plt.xlabel('True Values', fontsize=15)
+      plt.ylabel('Predictions', fontsize=15)
+      plt.axis('equal')
+      plt.show()
+      plt.tight_layout()
+      plt.savefig('chart3.png')
+      plt.show()
 # LSTMmodel(X_train, X_test, y_train, y_test)
 
 # Model LightGBM
@@ -154,7 +223,20 @@ def LGBMmodel(X1, X2, y1, y2):
       print(lgbm_scores)
       for k, v in lgbm_scores.items():
           print(k, v.mean())
-
+      chart = pd.DataFrame({'y2':y2.flatten(), 'pred':pred.flatten()})
+      chart = chart.reset_index()
+      plt.figure(figsize=(10,10))
+      plt.scatter(chart['y2'], chart["pred"], c='crimson')
+      p1 = max(max(chart['y2']), max(chart["pred"]))
+      p2 = min(min(chart['y2']), min(chart["pred"]))
+      plt.plot([p1, p2], [p1, p2], 'b-')
+      plt.xlabel('True Values', fontsize=15)
+      plt.ylabel('Predictions', fontsize=15)
+      plt.axis('equal')
+      plt.show()
+      plt.tight_layout()
+      plt.savefig('chart4.png')
+      plt.show()
 #LGBMmodel(X_train, X_test, y_train, y_test)
 
 # KOD - Komórka do uzyskania wyników (wcześniej zaimportuj biblioteki i wywołaj funkcje)
